@@ -9,25 +9,29 @@
 <body>
   <output id="message"></output>
   <script>
-    const messages = document.getElementById("mesages")
+    const messages = document.getElementById("message")
 
     const socket = new WebSocket('ws://localhost:1337')
 
     socket.onopen = () => {
       console.log('WebSocket is connected!')
+
       const id = Math.round(Math.random() * 100)
+
       console.log('Sending...', id)
 
       const data = JSON.stringify({id, name: 'teste', address: {street: 'Test'}})
 
       socket.send(data)
     }
+
     socket.onmessage = (msg) => {
       const message = msg.data
-      console.log('I got a message!', message)
-      messages.innerHTML += `<br/> ${message}`
+      messages.innerHTML += `${message}`
     }
+
     socket.onerror = (error) => console.error(`Error! ${error}`, error)
+
     socket.onclose = (event) => console.log('Disconnected from WebSocket server')
   </script>
 </body>
